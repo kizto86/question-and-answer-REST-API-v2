@@ -1,38 +1,51 @@
-import express,{Application,Request,Response,NextFunction} from "express";
+import express, { Application, Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
+import morgan from "morgan";
 import cors from "cors";
-const app:Application = express();
-
-interface Error{
-    status?:number;
-    message?:string;
-}
-
+const app: Application = express();
 
 module.exports = (opts: any) => {
+  //parse json from the request/response body
+  app.use(express.json());
   app.use(cors());
+  //log http status code and route
+  app.use(morgan("dev"));
 
-   app.get("/",(req:Request,res:Response)=>{
-       res.json({message:"Welcome to question and answer REST API"})
-   })
+  //Importing the route
 
-    //Error handler for page/route not found
+  const questionRoute = require("./routes/question");
 
-    app.use((req:Request, res:Response, next:NextFunction) => {
-        const error: {status?:number,message:string} = new Error("Page Not found");
-        error.status = 404;
-        next(error);
+  //Defining a route middleware
+  app.use("/api/questions", questionRoute);
+
+  interface Error {
+    status?: number;
+    message?: string;
+  }
+
+  app.get("/", (req: Request, res: Response) => {
+    res.json({ message: "Welcome to question and answer REST API" });
+  });
+
+  //Error handler for page/route not found
+
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    const error: { status?: number; message: string } = new Error(
+      "Page Not found"
+    );
+    error.status = 404;
+    next(error);
+  });
+
+  //Error handler for other types of error
+  app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
+    res.status(error.status || 500);
+    res.json({
+      error: {
+        message: error.message,
+      },
     });
-
-    //Error handler for other types of error
-    app.use((error:Error, req:Request, res:Response, next:NextFunction) => {
-        res.status(error.status || 500);
-        res.json({
-            error: {
-                message: error.message,
-            },
-        });
-    });
+  });
   //DB connection
   const db = async () => {
     await mongoose.connect(opts.MONGO_URI, {
