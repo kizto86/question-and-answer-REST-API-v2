@@ -1,7 +1,10 @@
 "use strict";
 
 import express, { Application, Request, Response, NextFunction } from "express";
+import mongoose from "mongoose";
 const router = express.Router();
+const Question = require("../models/question");
+const Answer = require("../models/answer");
 
 function asyncHandler(cb: any) {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -12,11 +15,16 @@ function asyncHandler(cb: any) {
     }
   };
 }
-//Send a GET request to /api/questions to  READ a list of question
+//Send a GET request to /api/questions to  READ a list of questions
 router.get(
   "/",
   asyncHandler(async (req: Request, res: Response) => {
-    res.json({ response: "You sent me a GET request" });
+    const questions: String = await Question.find();
+    if (questions.length == 0) {
+      res.status(404).json({ message: "No questions found" });
+    } else {
+      res.json({ message: "question found", question: questions });
+    }
   })
 );
 
@@ -24,7 +32,31 @@ router.get(
 router.post(
   "/",
   asyncHandler(async (req: Request, res: Response) => {
-    res.json({ response: "You sent me a POST request", body: req.body });
+    const question: {
+      username: string;
+      question_title: string;
+      question_description: string;
+    } = req.body;
+    if (
+      question.username &&
+      question.question_title &&
+      question.question_description
+    ) {
+      const savedQuestion = new Question({
+        username: question.username,
+        question_title: question.question_title,
+        question_description: question.question_description,
+      });
+      await savedQuestion.save();
+      res.status(201).json({
+        message: "question created successfully",
+      });
+    } else {
+      res.status(400).json({
+        message:
+          "username, question_title and question_description are required",
+      });
+    }
   })
 );
 
@@ -33,9 +65,12 @@ router.post(
 router.get(
   "/:qID/answers",
   asyncHandler(async (req: Request, res: Response) => {
+    const savedQuestion: string = await Question.findById(req.params.qID);
+    const savedAnswer: string = await Answer.find({ question: req.params.qID });
     res.json({
-      response: "You sent me a Answer GET request to /answers",
-      questionId: req.params.qID,
+      message: "Answer fetched successful",
+      question: savedQuestion,
+      answers: savedAnswer,
     });
   })
 );
@@ -45,11 +80,19 @@ router.get(
 router.post(
   "/:qID/answer",
   asyncHandler(async (req: Request, res: Response) => {
-    res.json({
-      response: "You sent me a POST request to /answer",
-      questionId: req.params.qID,
-      body: req.body,
-    });
+    const response: { answer: string } = req.body;
+    if (response.answer) {
+      const answer = new Answer({
+        answer: response.answer,
+        question: mongoose.Types.ObjectId(req.params.qID),
+      });
+      await answer.save();
+      res.status(201).json({
+        message: "Answer created successfully ",
+      });
+    } else {
+      res.status(404).json({ message: "answer is required" });
+    }
   })
 );
 
@@ -71,13 +114,7 @@ router.put(
 //to delete  an answer for a particular question
 router.delete(
   "/:qID/answer/:aID",
-  asyncHandler(async (req: Request, res: Response) => {
-    res.json({
-      response: "You sent me a DELETE request",
-      questionId: req.params.qID,
-      answerId: req.params.aID,
-    });
-  })
+  asyncHandler(async (req: Request, res: Response) => {})
 );
 
 module.exports = router;
