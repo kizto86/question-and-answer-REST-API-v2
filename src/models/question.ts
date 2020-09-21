@@ -1,11 +1,8 @@
-import mongoose from "mongoose";
+
+const  mongoose = require("mongoose")
 const { Schema } = mongoose;
 
-interface Question {
-  username: string;
-  question_title: string;
-  question_description: string;
-}
+
 
 const QuestionSchema = new Schema(
   {

@@ -29,6 +29,8 @@ function asyncHandler(cb) {
 }
 //Send a GET request to /api/questions to  READ a list of questions
 router.get("/", asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    //const offset = req.query.offset | 0;
+    //const limit = req.query.limit | 0 || 20;
     const questions = yield Question.find();
     if (questions.length == 0) {
         res.status(404).json({ message: "No questions found" });
@@ -63,7 +65,9 @@ router.post("/", asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, fu
 //to read answers to a particular question
 router.get("/:id/answers", asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const savedQuestion = yield Question.findById(req.params.id);
-    const savedAnswer = yield Answer.find({ question: req.params.id });
+    const savedAnswer = yield Answer.find({
+        question: req.params.id,
+    });
     res.json({
         message: "Answers fetched successful",
         question: savedQuestion,
@@ -74,6 +78,7 @@ router.get("/:id/answers", asyncHandler((req, res) => __awaiter(void 0, void 0, 
 //to create  a new answer for a particular question
 router.post("/:id/answer", asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const response = req.body;
+    console.log(req.body);
     if (response.answer) {
         const answer = new Answer({
             answer: response.answer,

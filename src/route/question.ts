@@ -6,6 +6,11 @@ const router = express.Router();
 const Question = require("../models/question");
 const Answer = require("../models/answer");
 
+interface Question {
+  username: string;
+  question_title: string;
+  question_description: string;
+}
 function asyncHandler(cb: any) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -19,7 +24,10 @@ function asyncHandler(cb: any) {
 router.get(
   "/",
   asyncHandler(async (req: Request, res: Response) => {
-    const questions: string = await Question.find();
+      //const offset = req.query.offset | 0;
+      //const limit = req.query.limit | 0 || 20;
+    const questions: Array<string> = await Question.find()
+
     if (questions.length == 0) {
       res.status(404).json({ message: "No questions found" });
     } else {
@@ -32,15 +40,12 @@ router.get(
 router.post(
   "/",
   asyncHandler(async (req: Request, res: Response) => {
-    const question: {
-      username: string;
-      question_title: string;
-      question_description: string;
-    } = req.body;
+    const question: Question = req.body;
     if (
       question.username &&
       question.question_title &&
       question.question_description
+
     ) {
       const savedQuestion = new Question({
         username: question.username,
@@ -65,8 +70,10 @@ router.post(
 router.get(
   "/:id/answers",
   asyncHandler(async (req: Request, res: Response) => {
-    const savedQuestion: string = await Question.findById(req.params.id);
-    const savedAnswer: string = await Answer.find({ question: req.params.id });
+    const savedQuestion: Array<string> = await Question.findById(req.params.id);
+    const savedAnswer: Array<string> = await Answer.find({
+      question: req.params.id,
+    });
     res.json({
       message: "Answers fetched successful",
       question: savedQuestion,
@@ -81,6 +88,7 @@ router.post(
   "/:id/answer",
   asyncHandler(async (req: Request, res: Response) => {
     const response: { answer: string } = req.body;
+    console.log(req.body);
     if (response.answer) {
       const answer = new Answer({
         answer: response.answer,
