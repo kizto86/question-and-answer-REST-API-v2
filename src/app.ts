@@ -8,12 +8,12 @@ module.exports = (opts: any) => {
   //parse json from the request/response body
   app.use(express.json());
   app.use(cors());
-  //log http status code and route
+  //log https status code and route
   app.use(morgan("dev"));
 
   //Importing the route
 
-  const questionRoute = require("./routes/question");
+  const questionRoute = require("./route/question");
 
   //Defining a route middleware
   app.use("/api/questions", questionRoute);

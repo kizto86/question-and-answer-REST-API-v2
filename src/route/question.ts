@@ -19,11 +19,11 @@ function asyncHandler(cb: any) {
 router.get(
   "/",
   asyncHandler(async (req: Request, res: Response) => {
-    const questions: String = await Question.find();
+    const questions: string = await Question.find();
     if (questions.length == 0) {
       res.status(404).json({ message: "No questions found" });
     } else {
-      res.json({ message: "question found", question: questions });
+      res.json({ message: "Questions found", question: questions });
     }
   })
 );
@@ -60,31 +60,31 @@ router.post(
   })
 );
 
-// Send a GET request to / questions/:qID/answers
+// Send a GET request to / questions/:id/answers
 //to read answers to a particular question
 router.get(
-  "/:qID/answers",
+  "/:id/answers",
   asyncHandler(async (req: Request, res: Response) => {
-    const savedQuestion: string = await Question.findById(req.params.qID);
-    const savedAnswer: string = await Answer.find({ question: req.params.qID });
+    const savedQuestion: string = await Question.findById(req.params.id);
+    const savedAnswer: string = await Answer.find({ question: req.params.id });
     res.json({
-      message: "Answer fetched successful",
+      message: "Answers fetched successful",
       question: savedQuestion,
       answers: savedAnswer,
     });
   })
 );
 
-//Send a POST request to /api/questions/:qID/answer
+//Send a POST request to /api/questions/answer
 //to create  a new answer for a particular question
 router.post(
-  "/:qID/answer",
+  "/:id/answer",
   asyncHandler(async (req: Request, res: Response) => {
     const response: { answer: string } = req.body;
     if (response.answer) {
       const answer = new Answer({
         answer: response.answer,
-        question: mongoose.Types.ObjectId(req.params.qID),
+        question: mongoose.Types.ObjectId(req.params.id),
       });
       await answer.save();
       res.status(201).json({
@@ -94,27 +94,6 @@ router.post(
       res.status(404).json({ message: "answer is required" });
     }
   })
-);
-
-//Send a PUT request to /questions/:qID/answer/:aID
-//to edit  a answer for a particular question
-router.put(
-  "/:qID/answer/:aID",
-  asyncHandler(async (req: Request, res: Response) => {
-    res.json({
-      response: "You sent me an UPDATE request",
-      questionId: req.params.qID,
-      answerId: req.params.aID,
-      body: req.body,
-    });
-  })
-);
-
-//Send a DELETE request to /questions/:qID/answer/:aID
-//to delete  an answer for a particular question
-router.delete(
-  "/:qID/answer/:aID",
-  asyncHandler(async (req: Request, res: Response) => {})
 );
 
 module.exports = router;

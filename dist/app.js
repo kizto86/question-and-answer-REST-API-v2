@@ -21,10 +21,10 @@ module.exports = (opts) => {
     //parse json from the request/response body
     app.use(express_1.default.json());
     app.use(cors_1.default());
-    //log http status code and route
+    //log https status code and route
     app.use(morgan_1.default("dev"));
     //Importing the route
-    const questionRoute = require("./routes/question");
+    const questionRoute = require("./route/question");
     //Defining a route middleware
     app.use("/api/questions", questionRoute);
     app.get("/", (req, res) => {
