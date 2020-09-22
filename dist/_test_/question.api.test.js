@@ -29,6 +29,6 @@ describe("/questions", () => {
     it("should return no questions initially", () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield request(app).get("/questions");
         expect(response.body).toEqual([]);
-        expect(response.statusCode).toBe(200);
+        expect(response.statusCode).toBe(404);
     }));
 });

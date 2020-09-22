@@ -1,7 +1,10 @@
 "use strict";
-// @ts-ignore
-let mongoose = require("mongoose");
-const { Schema } = mongoose;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = __importDefault(require("mongoose"));
+const { Schema } = mongoose_1.default;
 const QuestionSchema = new Schema({
     username: {
         type: String,
@@ -18,4 +21,4 @@ const QuestionSchema = new Schema({
 }, {
     versionKey: false,
 });
-module.exports = mongoose.model("Question", QuestionSchema);
+module.exports = mongoose_1.default.model("Question", QuestionSchema);

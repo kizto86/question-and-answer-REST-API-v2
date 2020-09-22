@@ -4,7 +4,7 @@ import morgan from "morgan";
 import cors from "cors";
 const app = express();
 
-module.exports = (opts: { MONGO_URI: string; PORT: any; }) => {
+module.exports = (opts: { MONGO_URI: string; PORT: SVGAnimatedNumberList }) => {
   //parse json from the request/response body
   app.use(express.json());
   app.use(cors());
@@ -23,7 +23,7 @@ module.exports = (opts: { MONGO_URI: string; PORT: any; }) => {
     message?: string;
   }
 
-  app.get("/", (req: Request, res: Response,) => {
+  app.get("/", (req: Request, res: Response) => {
     res.json({ message: "Welcome to question and answer REST API" });
   });
 
