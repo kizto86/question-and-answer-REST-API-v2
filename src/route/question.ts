@@ -24,15 +24,11 @@ function asyncHandler(cb: any) {
 router.get(
   "/",
   asyncHandler(async (req: Request, res: Response) => {
-      //const offset = req.query.offset | 0;
-      //const limit = req.query.limit | 0 || 20;
-    const questions: Array<string> = await Question.find()
+    //const offset = req.query.offset | 0;
+    //const limit = req.query.limit | 0 || 20;
+    const questions: Array<string> = await Question.find();
 
-    if (questions.length == 0) {
-      res.status(404).json({ message: "No questions found" });
-    } else {
-      res.json({ message: "Questions found", question: questions });
-    }
+    res.json(questions);
   })
 );
 
@@ -45,7 +41,6 @@ router.post(
       question.username &&
       question.question_title &&
       question.question_description
-
     ) {
       const savedQuestion = new Question({
         username: question.username,

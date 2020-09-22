@@ -32,12 +32,7 @@ router.get("/", asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, fun
     //const offset = req.query.offset | 0;
     //const limit = req.query.limit | 0 || 20;
     const questions = yield Question.find();
-    if (questions.length == 0) {
-        res.status(404).json({ message: "No questions found" });
-    }
-    else {
-        res.json({ message: "Questions found", question: questions });
-    }
+    res.json(questions);
 })));
 //Send a POST request to /api/questions to create a new question
 router.post("/", asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {

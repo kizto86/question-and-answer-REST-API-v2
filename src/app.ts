@@ -4,7 +4,7 @@ import morgan from "morgan";
 import cors from "cors";
 const app = express();
 
-module.exports = (opts: { MONGO_URI: string; PORT: SVGAnimatedNumberList }) => {
+module.exports = (opts: { MONGO_URI: string; PORT: number }) => {
   //parse json from the request/response body
   app.use(express.json());
   app.use(cors());
