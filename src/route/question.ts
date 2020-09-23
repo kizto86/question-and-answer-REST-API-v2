@@ -26,9 +26,13 @@ router.get(
   asyncHandler(async (req: Request, res: Response) => {
     //const offset = req.query.offset | 0;
     //const limit = req.query.limit | 0 || 20;
-    const questions: Array<string> = await Question.find();
-
-    res.json(questions);
+    const questions = await Question.find();
+    /*if (questions.length == 0) {
+      res.status(400).json({ message: "No questions found" });
+    } else {
+      res.json({ message: "question found", question: questions });
+    }*/
+      res.json(questions)
   })
 );
 
