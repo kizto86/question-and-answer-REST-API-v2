@@ -15,9 +15,12 @@
   "author": "kingchuks",
   "license": "MIT",
   "dependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
     "@types/jest": "^26.0.14",
     "@types/supertest": "^2.0.10",
     "D": "^1.0.0",
+    "babel-jest": "^26.3.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -27,6 +30,7 @@
     "nodemon": "^2.0.4"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.10.4",
     "@types/cors": "^2.8.7",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.8",

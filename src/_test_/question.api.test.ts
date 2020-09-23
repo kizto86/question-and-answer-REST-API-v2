@@ -8,8 +8,8 @@ describe("/questions", () => {
   afterEach(apiTestUtil.tearDownDB);
 
   it("should return no questions initially", async () => {
-    const response = await request(app).get("/questions");
+    const response = await request(app).get("/api/questions");
     expect(response.body).toEqual([]);
-    expect(response.statusCode).toBe(404);
+    expect(response.statusCode).toBe(200);
   });
 });
