@@ -1,6 +1,6 @@
 # Description
 
-Question and Answer API created with Typescript and Node.js
+Question and Answer REST API created with Express,Typescript and Node.js.
 
 # Endpoints
 
