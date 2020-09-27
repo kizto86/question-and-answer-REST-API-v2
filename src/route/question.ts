@@ -27,11 +27,6 @@ router.get(
     //const offset = req.query.offset | 0;
     //const limit = req.query.limit | 0 || 20;
     const questions = await Question.find();
-    /*if (questions.length == 0) {
-      res.status(400).json({ message: "No questions found" });
-    } else {
-      res.json({ message: "question found", question: questions });
-    }*/
       res.json(questions)
   })
 );
@@ -74,7 +69,7 @@ router.get(
       question: req.params.id,
     });
     res.json({
-      message: "Answers fetched successful",
+      message: "Answers fetched successfully",
       question: savedQuestion,
       answers: savedAnswer,
     });
@@ -95,7 +90,7 @@ router.post(
       });
       await answer.save();
       res.status(201).json({
-        message: "Answer created successfully ",
+        message: "Answer created successfully",
       });
     } else {
       res.status(404).json({ message: "answer is required" });

@@ -32,11 +32,6 @@ router.get("/", asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, fun
     //const offset = req.query.offset | 0;
     //const limit = req.query.limit | 0 || 20;
     const questions = yield Question.find();
-    /*if (questions.length == 0) {
-      res.status(400).json({ message: "No questions found" });
-    } else {
-      res.json({ message: "question found", question: questions });
-    }*/
     res.json(questions);
 })));
 //Send a POST request to /api/questions to create a new question
@@ -69,7 +64,7 @@ router.get("/:id/answers", asyncHandler((req, res) => __awaiter(void 0, void 0, 
         question: req.params.id,
     });
     res.json({
-        message: "Answers fetched successful",
+        message: "Answers fetched successfully",
         question: savedQuestion,
         answers: savedAnswer,
     });
@@ -86,7 +81,7 @@ router.post("/:id/answer", asyncHandler((req, res) => __awaiter(void 0, void 0, 
         });
         yield answer.save();
         res.status(201).json({
-            message: "Answer created successfully ",
+            message: "Answer created successfully",
         });
     }
     else {
